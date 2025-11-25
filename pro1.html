@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Science Fact Website</title>
+  <link rel="stylesheet" href="pro1.css">
+</head>
+<body>
+  <!-- Floating Background Elements -->
+  <div class="floating-elements">
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
+
+  <!-- User Profile Icon (top right) -->
+  <div id="userProfile" style="display:none; position:fixed; top:20px; right:20px; z-index:1000;">
+    <div id="profileIcon" style="width:45px; height:45px; background:#667eea; border-radius:50%; cursor:pointer; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-size:18px; box-shadow:0 4px 12px rgba(0,0,0,0.3);">
+      U
+    </div>
+    <div id="profileDropdown" style="display:none; position:absolute; top:55px; right:0; background:white; border-radius:12px; box-shadow:0 8px 25px rgba(0,0,0,0.2); width:180px; padding:15px; text-align:center;">
+      <p id="displayUsername" style="font-weight:bold; margin:0 0 10px 0; color:#667eea; font-size:16px;"></p>
+      <button id="logoutBtn" style="width:100%; padding:8px; background:#ff4757; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:500;">Logout</button>
+    </div>
+  </div>
+
+  <!-- Initial Question -->
+  <div id="initialQuestion" class="form-section">
+    <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=300&h=200&fit=crop&auto=format" alt="Science" style="width:100%; max-width:300px; height:200px; object-fit:cover; border-radius:15px; margin-bottom:20px;">
+    <h1>Science Fact Website</h1>
+    <p>Explore amazing science facts here!</p>
+    
+    <div style="text-align:center; margin:40px 0;">
+      <h2 style="color:#667eea; margin-bottom:30px;">Are you a new user?</h2>
+      <button id="yesNewUser" class="auth-toggle" style="margin:10px 20px; padding:15px 30px;">Yes</button>
+      <button id="noNotNewUser" class="auth-toggle" style="margin:10px 20px; padding:15px 30px;">No</button>
+    </div>
+  </div>
+
+  <!-- Sign In Form (for new users) -->
+  <div id="signInSection" class="form-section" style="display:none;">
+    <img src="https://images.unsplash.com/photo-1518152006812-edab29b069ac?w=300&h=200&fit=crop&auto=format" alt="Science" style="width:100%; max-width:300px; height:200px; object-fit:cover; border-radius:15px; margin-bottom:20px;">
+    <h1>Science Fact Website</h1>
+    <h2>Sign In - Create New Account</h2>
+    <form id="signInForm">
+      <input type="text" id="newUsername" placeholder="Create Username" required>
+      <input type="password" id="newPassword" placeholder="Create Password" required>
+      <select id="gender" required style="width:100%; padding:15px; margin:10px 0; border:2px solid #ddd; border-radius:12px; font-size:16px;">
+        <option value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+      <button type="submit" style="display:block; width:100%; margin-top:15px;">Create Account</button>
+      <p id="signInMessage"></p>
+    </form>
+  </div>
+
+  <!-- Log In Form (for existing users) -->
+  <div id="logInSection" class="form-section" style="display:none;">
+    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=300&h=200&fit=crop&auto=format" alt="Science Research" style="width:100%; max-width:300px; height:200px; object-fit:cover; border-radius:15px; margin-bottom:20px;">
+    <h1>Science Fact Website</h1>
+    <h2>Log In</h2>
+    <form id="logInForm">
+      <input type="text" id="username" placeholder="Enter Username" required>
+      <input type="password" id="password" placeholder="Enter Password" required>
+      <button type="submit" style="display:block; width:100%; margin-top:15px;">Login</button>
+      <p id="logInMessage"></p>
+    </form>
+  </div>
+
+  <!-- Main Content (hidden until login) -->
+  <div id="mainContent" style="display:none;">
+    <header>
+
+      <div id="welcomeMessage" style="text-align:center; padding:10px; background:rgba(255,255,255,0.1); margin-bottom:20px; border-radius:10px;">
+        <h2 style="color:white; margin:0;">Welcome back, <span id="welcomeUsername"></span>! 🎉</h2>
+      </div>
+
+      <nav>
+        <button id="dashboardBtn" class="nav-btn active">Dashboard</button>
+        <button id="learningBtn" class="nav-btn">Learning</button>
+        <button id="quizBtn" class="nav-btn">Quiz</button>
+        <button id="scoresBtn" class="nav-btn">Scores</button>
+        <button id="settingsBtn" class="nav-btn">Settings</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Dashboard Section -->
+      <section id="dashboardSection" class="section active">
+        <h2>Dashboard</h2>
+        <div class="dashboard-grid">
+          <div class="stat-card">
+            <h3>Quizzes Completed</h3>
+            <p id="quizzesCompleted">0</p>
+          </div>
+          <div class="stat-card">
+            <h3>Average Score</h3>
+            <p id="averageScore">0%</p>
+          </div>
+          <div class="stat-card">
+            <h3>Learning Progress</h3>
+            <p id="learningProgress">0%</p>
+          </div>
+          <div class="stat-card">
+            <h3>Total Points</h3>
+            <p id="totalPoints">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Learning Section -->
+      <section id="learningSection" class="section">
+        <h2>Learning Center</h2>
+        <div class="learning-content">
+          <div class="fact-card interactive-card">
+            <div class="card-icon">🧪</div>
+            <h3>Chemistry</h3>
+            <p>Explore atoms, molecules, chemical reactions, and the periodic table.</p>
+            <div class="card-stats">
+              <span>📚 4 Chapters</span>
+              <span>⏱️ 45 min</span>
+              <span>🎆 Interactive</span>
+            </div>
+            <button class="learn-btn" onclick="showChemistry()">🚀 Start Learning</button>
+          </div>
+          <div class="fact-card interactive-card">
+            <div class="card-icon">⚙️</div>
+            <h3>Physics</h3>
+            <p>Understand motion, energy, forces, and the fundamental laws of nature.</p>
+            <div class="card-stats">
+              <span>📚 4 Chapters</span>
+              <span>⏱️ 50 min</span>
+              <span>🎆 Interactive</span>
+            </div>
+            <button class="learn-btn" onclick="showPhysics()">🚀 Start Learning</button>
+          </div>
+          <div class="fact-card interactive-card">
+            <div class="card-icon">🧬</div>
+            <h3>Biology</h3>
+            <p>Discover life sciences, cells, genetics, and biological processes.</p>
+            <div class="card-stats">
+              <span>📚 4 Chapters</span>
+              <span>⏱️ 40 min</span>
+              <span>🎆 Interactive</span>
+            </div>
+            <button class="learn-btn" onclick="showBiology()">🚀 Start Learning</button>
+          </div>
+          <div class="fact-card interactive-card">
+            <div class="card-icon">🌌</div>
+            <h3>Astronomy</h3>
+            <p>Learn about stars, planets, galaxies, and the mysteries of space.</p>
+            <div class="card-stats">
+              <span>📚 4 Chapters</span>
+              <span>⏱️ 35 min</span>
+              <span>🎆 Interactive</span>
+            </div>
+            <button class="learn-btn" onclick="showAstronomy()">🚀 Start Learning</button>
+          </div>
+          <div class="fact-card interactive-card">
+            <div class="card-icon">🌍</div>
+            <h3>Earth Science</h3>
+            <p>Study geology, weather, climate, and Earth's natural processes.</p>
+            <div class="card-stats">
+              <span>📚 4 Chapters</span>
+              <span>⏱️ 38 min</span>
+              <span>🎆 Interactive</span>
+            </div>
+            <button class="learn-btn" onclick="showEarthScience()">🚀 Start Learning</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chemistry Content -->
+      <section id="chemistryContent" class="section">
+        <div class="learning-header">
+          <button onclick="showSection('learningSection', 'learningBtn')" class="back-btn">← Back to Learning</button>
+          <h2>🧪 Chemistry - Complete Guide</h2>
+          <div class="learning-tools">
+            <div class="highlighter-toolbar">
+              <span>Highlighter:</span>
+              <button class="highlight-btn" data-color="yellow" style="background:#ffeb3b;">📝</button>
+              <button class="highlight-btn" data-color="green" style="background:#4caf50;">📝</button>
+              <button class="highlight-btn" data-color="blue" style="background:#2196f3;">📝</button>
+              <button class="highlight-btn" data-color="pink" style="background:#e91e63;">📝</button>
+              <button class="clear-highlights">🗑️ Clear</button>
+            </div>
+            <div class="view-options">
+              <button class="diagram-toggle" onclick="toggleDiagrams()">📊 Show Diagrams</button>
+              <button class="font-size" onclick="changeFontSize()">🔍 Font Size</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-content" id="chemistryBookContent">
+          <h3>⚙️ Chapter 1: Atoms and Elements</h3>
+          
+          <div class="diagram-container" style="display:none;">
+            <div class="atom-diagram">
+              <div class="nucleus"></div>
+              <div class="electron-shell shell-1"></div>
+              <div class="electron-shell shell-2"></div>
+              <div class="electron e1"></div>
+              <div class="electron e2"></div>
+              <div class="electron e3"></div>
+              <p class="diagram-caption">Interactive Atom Model - Nucleus with Electron Shells</p>
+            </div>
+          </div>
+          
+          <div class="content-image">
+            <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=200&fit=crop" alt="Atoms and molecules" style="width:100%; border-radius:10px; margin:1rem 0;">
+          </div>
+          
+          <h4>🔬 Page 1: Introduction to Atoms</h4>
+          <div class="key-concept">
+            <h5>💡 Key Concept: What are Atoms?</h5>
+            <p>Atoms are the smallest units of matter that retain the properties of an element.</p>
+          </div>
+          
+          <p>Atoms are the fundamental building blocks of all matter in the universe. Everything you see, touch, and breathe is made up of atoms. These incredibly small particles are so tiny that millions of them could fit on the period at the end of this sentence.</p>
+          
+          <div class="fun-fact">
+            <h5>🎯 Fun Fact</h5>
+            <p>If an atom were the size of a football stadium, the nucleus would be the size of a marble at the center!</p>
+          </div>
+          
+          <p>The concept of atoms was first proposed by ancient Greek philosophers, but it wasn't until the early 1800s that John Dalton developed the first scientific atomic theory. He proposed that all matter is composed of indivisible particles called atoms, and that atoms of the same element are identical in mass and properties.</p>
+          
+          <div class="timeline">
+            <h5>📅 Historical Timeline</h5>
+            <ul>
+              <li><strong>400 BC:</strong> 🏛️ Greek philosophers propose atomic theory</li>
+              <li><strong>1803:</strong> 👨‍🔬 John Dalton's atomic theory</li>
+              <li><strong>1897:</strong> ⚡ J.J. Thomson discovers electrons</li>
+              <li><strong>1911:</strong> 🎯 Rutherford discovers nucleus</li>
+            </ul>
+          </div>
+          
+          <p>Modern atomic theory has evolved significantly since Dalton's time. We now know that atoms are not indivisible but are composed of even smaller subatomic particles. Despite their tiny size, atoms have a complex internal structure that determines the properties of all materials.</p>
+          
+          <h4>Page 2: Atomic Structure</h4>
+          <p>An atom consists of three main types of subatomic particles: protons, neutrons, and electrons. The arrangement and number of these particles determine the atom's identity and behavior.</p>
+          <p><strong>The Nucleus:</strong> At the center of every atom is the nucleus, which contains protons and neutrons. The nucleus is incredibly dense and makes up almost all of the atom's mass, despite occupying only a tiny fraction of its volume. If an atom were the size of a football stadium, the nucleus would be about the size of a marble at the center.</p>
+          <p><strong>Protons:</strong> These positively charged particles determine the element's identity. The number of protons in an atom's nucleus is called the atomic number, and it's unique for each element. For example, all carbon atoms have 6 protons, while all oxygen atoms have 8 protons.</p>
+          <p><strong>Neutrons:</strong> These particles have no electric charge (they're neutral) but have nearly the same mass as protons. Neutrons help stabilize the nucleus and can vary in number even within the same element, creating different isotopes.</p>
+          <p><strong>Electrons:</strong> These negatively charged particles orbit the nucleus in regions called electron shells or energy levels. Electrons are much smaller than protons and neutrons, and they determine how atoms bond with each other to form compounds.</p>
+          
+          <h4>Page 3: Atomic Numbers and Mass</h4>
+          <p>Understanding atomic numbers and atomic mass is crucial for working with elements and compounds in chemistry.</p>
+          <p><strong>Atomic Number (Z):</strong> This is the number of protons in an atom's nucleus. It defines the element and appears on the periodic table. For example, hydrogen has an atomic number of 1 (1 proton), helium has 2 (2 protons), and uranium has 92 (92 protons). In a neutral atom, the number of electrons equals the number of protons.</p>
+          <p><strong>Mass Number (A):</strong> This is the total number of protons and neutrons in an atom's nucleus. Since electrons have negligible mass compared to protons and neutrons, the mass number gives us the approximate atomic mass. For example, a carbon atom with 6 protons and 6 neutrons has a mass number of 12.</p>
+          <p><strong>Isotopes:</strong> These are atoms of the same element that have different numbers of neutrons. For instance, carbon-12 has 6 neutrons, while carbon-14 has 8 neutrons. Both are carbon atoms because they have 6 protons, but they have different mass numbers due to the different number of neutrons.</p>
+          <p><strong>Atomic Mass:</strong> This is the weighted average mass of all naturally occurring isotopes of an element. It's usually not a whole number because it accounts for the relative abundance of different isotopes in nature.</p>
+          
+          <h3>Chapter 2: The Periodic Table</h3>
+          
+          <h4>Page 1: History and Organization</h4>
+          <p>The periodic table is one of the most important tools in chemistry, organizing all known elements in a logical and predictable pattern. Its development represents one of the greatest achievements in scientific history.</p>
+          <p>In 1869, Russian chemist Dmitri Mendeleev created the first version of the periodic table by arranging elements according to their atomic weights. He noticed that when elements were arranged this way, their properties repeated in a periodic pattern. Mendeleev was so confident in his pattern that he left gaps for undiscovered elements and even predicted their properties.</p>
+          <p>The modern periodic table arranges elements by atomic number (number of protons) rather than atomic weight. This arrangement, established by Henry Moseley in 1913, resolved inconsistencies in Mendeleev's original table and provided a more accurate representation of elemental relationships.</p>
+          <p>Today's periodic table contains 118 confirmed elements, from hydrogen (atomic number 1) to oganesson (atomic number 118). Scientists continue to attempt to synthesize new superheavy elements in laboratories around the world.</p>
+          
+          <h4>Page 2: Groups and Periods</h4>
+          <p>The periodic table's structure reveals important patterns in elemental properties through its organization into groups and periods.</p>
+          <p><strong>Groups (Vertical Columns):</strong> Elements in the same group have the same number of electrons in their outermost shell, giving them similar chemical properties. There are 18 groups in the modern periodic table.</p>
+          <p>• <strong>Group 1 (Alkali Metals):</strong> Highly reactive metals like sodium and potassium that readily lose one electron</p>
+          <p>• <strong>Group 2 (Alkaline Earth Metals):</strong> Reactive metals like magnesium and calcium that lose two electrons</p>
+          <p>• <strong>Group 17 (Halogens):</strong> Highly reactive non-metals like chlorine and fluorine that gain one electron</p>
+          <p>• <strong>Group 18 (Noble Gases):</strong> Unreactive gases like helium and neon with complete outer electron shells</p>
+          <p><strong>Periods (Horizontal Rows):</strong> Elements in the same period have the same number of electron shells. As you move across a period from left to right, the atomic number increases, and properties change in predictable ways.</p>
+          <p>Moving across a period, atoms generally become smaller due to increased nuclear charge pulling electrons closer. Metallic character decreases from left to right, while non-metallic character increases.</p>
+          
+          <h4>Page 3: Element Categories and Properties</h4>
+          <p>The periodic table can be divided into several major categories based on the properties and behaviors of elements.</p>
+          <p><strong>Metals (Left and Center):</strong> About 75% of elements are metals. They typically have these properties:</p>
+          <p>• Conduct electricity and heat well due to mobile electrons</p>
+          <p>• Malleable (can be hammered into sheets) and ductile (can be drawn into wires)</p>
+          <p>• Have metallic luster (shiny appearance)</p>
+          <p>• Tend to lose electrons in chemical reactions, forming positive ions</p>
+          <p>• Examples: iron, copper, gold, aluminum</p>
+          <p><strong>Non-metals (Upper Right):</strong> These elements have properties opposite to metals:</p>
+          <p>• Poor conductors of electricity and heat (insulators)</p>
+          <p>• Brittle when solid, lacking metallic luster</p>
+          <p>• Tend to gain electrons in chemical reactions, forming negative ions</p>
+          <p>• Examples: oxygen, nitrogen, chlorine, carbon</p>
+          <p><strong>Metalloids (Diagonal Band):</strong> Elements with properties intermediate between metals and non-metals:</p>
+          <p>• Semiconductors - conduct electricity better than non-metals but not as well as metals</p>
+          <p>• Useful in electronic devices like computer chips</p>
+          <p>• Examples: silicon, germanium, arsenic</p>
+          
+          <h3>Chapter 3: Chemical Bonds</h3>
+          
+          <h4>Page 1: Introduction to Chemical Bonding</h4>
+          <p>Chemical bonds are the forces that hold atoms together in compounds. Understanding bonding is crucial because it explains how atoms combine to form the millions of different substances we observe in nature.</p>
+          <p>Atoms form bonds to achieve a more stable electron configuration, typically by filling their outermost electron shell. This drive for stability is the fundamental reason why chemical reactions occur and why certain combinations of atoms are more stable than others.</p>
+          <p>The type of bond formed depends on the difference in electronegativity between atoms. Electronegativity is an atom's ability to attract electrons in a chemical bond. Elements on the right side of the periodic table (like fluorine and oxygen) have high electronegativity, while elements on the left side (like sodium and potassium) have low electronegativity.</p>
+          
+          <h4>Page 2: Ionic and Covalent Bonds</h4>
+          <p><strong>Ionic Bonds:</strong> Form when electrons are completely transferred from one atom to another, typically between metals and non-metals. The metal loses electrons to become a positively charged ion (cation), while the non-metal gains electrons to become a negatively charged ion (anion). The opposite charges attract, creating the ionic bond.</p>
+          <p>Example: Sodium chloride (NaCl) - Sodium loses one electron to become Na+, chlorine gains one electron to become Cl-. The resulting attraction forms table salt.</p>
+          <p><strong>Covalent Bonds:</strong> Form when atoms share electrons, typically between non-metals. The shared electrons are attracted to both nuclei, holding the atoms together. Covalent bonds can be single (sharing one pair), double (sharing two pairs), or triple (sharing three pairs).</p>
+          <p>Example: Water (H₂O) - Oxygen shares electrons with two hydrogen atoms, forming two covalent bonds.</p>
+          
+          <h4>Page 3: Metallic Bonds and Bond Properties</h4>
+          <p><strong>Metallic Bonds:</strong> Form in metals where electrons are delocalized in a "sea of electrons." This allows electrons to move freely throughout the metal structure, explaining why metals conduct electricity and heat so well.</p>
+          <p>The mobile electrons also explain other metallic properties like malleability (ability to be hammered into sheets) and ductility (ability to be drawn into wires). When stress is applied, the electron sea adjusts, preventing the metal from breaking.</p>
+          <p><strong>Bond Strength and Length:</strong> Generally, shorter bonds are stronger. Triple bonds are shorter and stronger than double bonds, which are shorter and stronger than single bonds. Bond strength affects a compound's stability, melting point, and chemical reactivity.</p>
+          <p><strong>Intermolecular Forces:</strong> Weaker forces between molecules include hydrogen bonds, dipole-dipole interactions, and van der Waals forces. These determine properties like boiling points and solubility.</p>
+          
+          <h3>Chapter 4: Chemical Reactions</h3>
+          
+          <h4>Page 1: Understanding Chemical Reactions</h4>
+          <p>Chemical reactions involve the breaking and forming of chemical bonds, resulting in new substances with different properties. During a reaction, atoms are rearranged, but they are neither created nor destroyed - this is the Law of Conservation of Mass.</p>
+          <p>Chemical equations represent reactions using symbols and formulas. The substances that react are called reactants (written on the left), and the substances produced are called products (written on the right). An arrow (→) separates reactants from products.</p>
+          <p>Balancing chemical equations ensures that the same number of each type of atom appears on both sides of the equation. This reflects the conservation of mass - matter cannot be created or destroyed in ordinary chemical reactions.</p>
+          <p>Example: 2H₂ + O₂ → 2H₂O (hydrogen gas + oxygen gas → water)</p>
+          
+          <h4>Page 2: Types of Chemical Reactions</h4>
+          <p><strong>Synthesis (Combination):</strong> Two or more simple substances combine to form a more complex compound. General form: A + B → AB</p>
+          <p>Example: 2Na + Cl₂ → 2NaCl (sodium + chlorine → sodium chloride)</p>
+          <p><strong>Decomposition:</strong> A complex compound breaks down into simpler substances. General form: AB → A + B</p>
+          <p>Example: 2H₂O → 2H₂ + O₂ (water → hydrogen + oxygen, using electricity)</p>
+          <p><strong>Single Replacement:</strong> One element replaces another in a compound. General form: A + BC → AC + B</p>
+          <p>Example: Zn + CuSO₄ → ZnSO₄ + Cu (zinc replaces copper)</p>
+          <p><strong>Double Replacement:</strong> Two compounds exchange ions. General form: AB + CD → AD + CB</p>
+          <p>Example: AgNO₃ + NaCl → AgCl + NaNO₃ (silver nitrate + sodium chloride → silver chloride + sodium nitrate)</p>
+          
+          <h4>Page 3: Reaction Conditions and Energy</h4>
+          <p><strong>Factors Affecting Reaction Rate:</strong> Temperature, concentration, surface area, and catalysts all influence how fast reactions occur. Higher temperatures generally increase reaction rates because particles move faster and collide more frequently.</p>
+          <p><strong>Catalysts:</strong> Substances that speed up reactions without being consumed. They work by providing an alternative pathway with lower activation energy. Enzymes are biological catalysts that make life processes possible.</p>
+          <p><strong>Energy in Reactions:</strong> Exothermic reactions release energy (usually as heat), making the surroundings warmer. Endothermic reactions absorb energy, making the surroundings cooler. The energy change determines whether a reaction will occur spontaneously.</p>
+          <p><strong>Activation Energy:</strong> The minimum energy needed to start a reaction. Even exothermic reactions need initial energy input to break existing bonds before new bonds can form and release energy.</p>
+        </div>
+      </section>
+
+      <!-- Physics Content -->
+      <section id="physicsContent" class="section">
+        <div class="learning-header">
+          <button onclick="showSection('learningSection', 'learningBtn')" class="back-btn">← Back to Learning</button>
+          <h2>⚙️ Physics - Complete Guide</h2>
+          <div class="learning-tools">
+            <div class="highlighter-toolbar">
+              <span>Highlighter:</span>
+              <button class="highlight-btn" data-color="yellow" style="background:#ffeb3b;">📝</button>
+              <button class="highlight-btn" data-color="green" style="background:#4caf50;">📝</button>
+              <button class="highlight-btn" data-color="blue" style="background:#2196f3;">📝</button>
+              <button class="highlight-btn" data-color="pink" style="background:#e91e63;">📝</button>
+              <button class="clear-highlights">🗑️ Clear</button>
+            </div>
+            <div class="view-options">
+              <button class="diagram-toggle" onclick="toggleDiagrams()">📊 Show Diagrams</button>
+              <button class="font-size" onclick="changeFontSize()">🔍 Font Size</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-content">
+          <h3>Chapter 1: Motion and Forces</h3>
+          
+          <div class="content-image">
+            <img src="https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?w=400&h=200&fit=crop" alt="Physics motion" style="width:100%; border-radius:10px; margin:1rem 0;">
+          </div>
+          
+          <h4>⚙️ Page 1: Understanding Motion</h4>
+          
+          <div class="key-concept">
+            <h5>💡 Key Concept: What is Motion?</h5>
+            <p>Motion is the change in position of an object with respect to time and relative to a reference frame.</p>
+          </div>
+          
+          <p>Motion is everywhere around us - from the rotation of Earth to the movement of blood through our bodies. Physics studies motion to understand how and why objects move, providing the foundation for everything from sports to space travel.</p>
+          
+          <div class="physics-examples">
+            <h5>🌍 Examples of Motion in Daily Life</h5>
+            <div class="example-grid">
+              <div class="example-item">
+                <span>🚗</span>
+                <p>Car driving</p>
+              </div>
+              <div class="example-item">
+                <span>🌍</span>
+                <p>Earth rotating</p>
+              </div>
+              <div class="example-item">
+                <span>❤️</span>
+                <p>Blood flowing</p>
+              </div>
+              <div class="example-item">
+                <span>🏃</span>
+                <p>Person running</p>
+              </div>
+            </div>
+          </div>
+          <p><strong>Types of Motion:</strong> Linear motion occurs in a straight line, rotational motion involves spinning around an axis, and oscillatory motion repeats in cycles. Most real-world motion combines these types.</p>
+          <p><strong>Reference Frames:</strong> Motion is relative - an object's motion depends on the observer's perspective. A passenger on a train is at rest relative to the train but moving relative to the ground. Understanding reference frames is crucial for analyzing motion correctly.</p>
+          <p><strong>Describing Motion:</strong> We use position, velocity, and acceleration to describe motion quantitatively. Position tells us where an object is, velocity tells us how fast and in what direction it's moving, and acceleration tells us how velocity changes over time.</p>
+          
+          <h4>Page 2: Newton's Laws of Motion</h4>
+          <p><strong>First Law (Law of Inertia):</strong> Objects at rest stay at rest, and objects in motion stay in motion at constant velocity, unless acted upon by an unbalanced force. This law explains why you lurch forward when a car brakes suddenly - your body wants to continue moving at the same speed.</p>
+          <p>Inertia is an object's resistance to changes in motion. More massive objects have greater inertia, which is why it's harder to push a car than a bicycle.</p>
+          <p><strong>Second Law:</strong> The acceleration of an object is directly proportional to the net force acting on it and inversely proportional to its mass. Mathematically: F = ma. This law allows us to predict how objects will move when forces are applied.</p>
+          <p><strong>Third Law:</strong> For every action, there is an equal and opposite reaction. When you walk, you push backward on the ground, and the ground pushes forward on you with equal force. This law explains how rockets work in space - they push exhaust gases backward, and the gases push the rocket forward.</p>
+          
+          <h4>Page 3: Types of Forces</h4>
+          <p><strong>Contact Forces:</strong> These require physical contact between objects. Friction opposes motion between surfaces, normal force supports objects against gravity, and tension exists in ropes and cables under stress.</p>
+          <p><strong>Non-contact Forces:</strong> These act at a distance without physical contact. Gravity attracts all objects with mass, electromagnetic forces affect charged particles, and nuclear forces hold atomic nuclei together.</p>
+          <p><strong>Friction:</strong> Always opposes motion and depends on the surfaces in contact and the normal force pressing them together. Static friction prevents motion from starting, while kinetic friction opposes ongoing motion. Friction can be helpful (walking, braking) or problematic (engine wear).</p>
+          <p><strong>Gravity:</strong> The universal force of attraction between all objects with mass. On Earth's surface, gravity gives objects a downward acceleration of 9.8 m/s². Understanding gravity is essential for everything from dropping a ball to launching satellites.</p>
+          
+          <h3>Chapter 2: Energy</h3>
+          
+          <h4>Page 1: What is Energy?</h4>
+          <p>Energy is the capacity to do work or cause change. It's one of the most fundamental concepts in physics and appears in countless forms throughout the universe. Energy cannot be created or destroyed, only transformed from one form to another - this is the Law of Conservation of Energy.</p>
+          <p>Energy makes everything happen - from the beating of your heart to the shining of stars. Understanding energy helps us comprehend natural phenomena and develop technologies that improve our lives.</p>
+          <p><strong>Work and Energy Relationship:</strong> Work is done when a force moves an object through a distance. The work done on an object equals the change in its energy. This relationship connects force, motion, and energy in a fundamental way.</p>
+          <p><strong>Units of Energy:</strong> Energy is measured in joules (J) in the metric system. One joule is the energy needed to lift a small apple about 10 centimeters against Earth's gravity.</p>
+          
+          <h4>Page 2: Kinetic and Potential Energy</h4>
+          <p><strong>Kinetic Energy:</strong> The energy of motion. Any moving object has kinetic energy, calculated as KE = ½mv², where m is mass and v is velocity. Doubling the speed quadruples the kinetic energy, which explains why car accidents at high speeds are so devastating.</p>
+          <p>Examples: A rolling ball, flowing water, moving air (wind), and orbiting planets all have kinetic energy. The faster an object moves or the more massive it is, the more kinetic energy it possesses.</p>
+          <p><strong>Potential Energy:</strong> Stored energy due to position or condition. Gravitational potential energy (PE = mgh) depends on height above a reference point. The higher an object is lifted, the more potential energy it gains.</p>
+          <p>Other forms include elastic potential energy (compressed springs, stretched rubber bands) and chemical potential energy (stored in molecular bonds of fuels and food). A drawn bow, raised hammer, and charged battery all contain potential energy.</p>
+          
+          <h4>Page 3: Energy Transformations</h4>
+          <p><strong>Energy Conversion:</strong> Energy constantly changes from one form to another. A pendulum converts potential energy to kinetic energy and back again. A car engine converts chemical energy in gasoline to kinetic energy of motion.</p>
+          <p><strong>Thermal Energy:</strong> The total kinetic energy of particles in a substance. Temperature measures average kinetic energy of particles. Heat is thermal energy transferred between objects at different temperatures.</p>
+          <p><strong>Electrical Energy:</strong> Energy from moving electric charges. Generated in power plants and used to run countless devices. Can be easily converted to other forms like light, heat, and mechanical energy.</p>
+          <p><strong>Energy Efficiency:</strong> No energy conversion is 100% efficient - some energy is always lost as heat. Understanding efficiency helps us design better machines and reduce energy waste in our daily lives.</p>
+          
+          <h3>Chapter 3: Waves and Sound</h3>
+          
+          <h4>Page 1: Understanding Waves</h4>
+          <p>Waves are disturbances that transfer energy through space or matter without transferring the matter itself. They're everywhere - from ocean waves to radio signals to the sound of your voice.</p>
+          <p><strong>Wave Motion:</strong> When you drop a stone in water, ripples spread outward. The water doesn't travel with the wave; it moves up and down as the wave passes. This demonstrates how waves carry energy without carrying matter.</p>
+          <p><strong>Types of Waves:</strong> Mechanical waves (like sound) need a medium to travel through. Electromagnetic waves (like light) can travel through empty space. Transverse waves vibrate perpendicular to their direction of travel, while longitudinal waves vibrate parallel to their direction.</p>
+          
+          <h4>Page 2: Wave Properties</h4>
+          <p><strong>Wavelength (λ):</strong> The distance between two identical points on consecutive waves, such as peak to peak or trough to trough. Longer wavelengths correspond to lower frequencies.</p>
+          <p><strong>Frequency (f):</strong> The number of complete waves that pass a point in one second, measured in hertz (Hz). Human hearing ranges from about 20 Hz to 20,000 Hz.</p>
+          <p><strong>Amplitude:</strong> The maximum displacement from the rest position. For sound waves, larger amplitude means louder sound. For light waves, larger amplitude means brighter light.</p>
+          <p><strong>Wave Speed:</strong> How fast the wave travels, calculated as speed = wavelength × frequency. Sound travels at about 343 m/s in air, while light travels at 300,000,000 m/s in vacuum.</p>
+          
+          <h4>Page 3: Sound Waves</h4>
+          <p><strong>How Sound Works:</strong> Sound is created by vibrating objects that compress and expand air molecules, creating pressure waves. Your vocal cords vibrate to create sound waves that travel through air to listeners' ears.</p>
+          <p><strong>Sound Properties:</strong> Pitch depends on frequency - higher frequency means higher pitch. Loudness depends on amplitude - larger amplitude means louder sound. Timbre (tone quality) depends on the wave shape and harmonics.</p>
+          <p><strong>Sound Applications:</strong> Ultrasound uses high-frequency sound for medical imaging. Sonar uses sound reflection to map underwater terrain. Musical instruments create specific frequencies and harmonics to produce pleasing sounds.</p>
+          
+          <h3>Chapter 4: Light and Optics</h3>
+          
+          <h4>Page 1: Nature of Light</h4>
+          <p>Light exhibits both wave and particle properties - a concept called wave-particle duality. As a wave, light has wavelength and frequency. As a particle (photon), light carries discrete packets of energy.</p>
+          <p><strong>Electromagnetic Spectrum:</strong> Light is part of the electromagnetic spectrum, which includes radio waves, microwaves, infrared, visible light, ultraviolet, X-rays, and gamma rays. Visible light is just a tiny portion of this spectrum.</p>
+          <p><strong>Speed of Light:</strong> Light travels at approximately 300,000,000 meters per second in vacuum - the fastest speed possible in the universe. Nothing with mass can reach this speed.</p>
+          
+          <h4>Page 2: Light Behavior</h4>
+          <p><strong>Reflection:</strong> Light bounces off surfaces following the law of reflection - the angle of incidence equals the angle of reflection. Mirrors use reflection to form images.</p>
+          <p><strong>Refraction:</strong> Light bends when passing from one medium to another due to speed changes. This bending creates optical illusions like a straw appearing bent in water.</p>
+          <p><strong>Dispersion:</strong> White light separates into colors when refracted because different colors bend by different amounts. Prisms and rainbows demonstrate this effect.</p>
+          
+          <h4>Page 3: Optical Applications</h4>
+          <p><strong>Lenses:</strong> Curved pieces of transparent material that focus or spread light. Convex lenses converge light rays, while concave lenses diverge them. Used in eyeglasses, cameras, and telescopes.</p>
+          <p><strong>Interference:</strong> When light waves overlap, they can add together (constructive interference) or cancel out (destructive interference). This creates colorful patterns in soap bubbles and oil films.</p>
+          <p><strong>Modern Applications:</strong> Lasers produce coherent light for surgery, communication, and manufacturing. Fiber optics use total internal reflection to transmit information at light speed over long distances.</p>
+        </div>
+      </section>
+
+      <!-- Biology Content -->
+      <section id="biologyContent" class="section">
+        <div class="learning-header">
+          <button onclick="showSection('learningSection', 'learningBtn')" class="back-btn">← Back to Learning</button>
+          <h2>🧬 Biology - Complete Guide</h2>
+          <div class="learning-tools">
+            <div class="highlighter-toolbar">
+              <span>Highlighter:</span>
+              <button class="highlight-btn" data-color="yellow" style="background:#ffeb3b;">📝</button>
+              <button class="highlight-btn" data-color="green" style="background:#4caf50;">📝</button>
+              <button class="highlight-btn" data-color="blue" style="background:#2196f3;">📝</button>
+              <button class="highlight-btn" data-color="pink" style="background:#e91e63;">📝</button>
+              <button class="clear-highlights">🗑️ Clear</button>
+            </div>
+            <div class="view-options">
+              <button class="diagram-toggle" onclick="toggleDiagrams()">📊 Show Diagrams</button>
+              <button class="font-size" onclick="changeFontSize()">🔍 Font Size</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-content">
+          <h3>Chapter 1: Cell Biology</h3>
+          
+          <h4>Page 1: The Cell Theory</h4>
+          <p>The cell theory is one of the fundamental principles of biology, stating that all living things are composed of one or more cells, the cell is the basic unit of life, and all cells arise from pre-existing cells.</p>
+          <p>This theory revolutionized our understanding of life when it was developed in the 1800s by scientists like Matthias Schleiden, Theodor Schwann, and Rudolf Virchow. Before this, people didn't understand what made something alive.</p>
+          <p><strong>Discovery of Cells:</strong> Robert Hooke first observed cells in 1665 when he looked at cork under a microscope and saw tiny compartments he called "cells." Later, Antoni van Leeuwenhoek observed living cells, including bacteria and protozoa.</p>
+          <p><strong>Size and Scale:</strong> Most cells are microscopic. A typical human cell is about 10-30 micrometers in diameter - you could fit about 40 cells across the width of a human hair.</p>
+          
+          <h4>Page 2: Prokaryotic vs Eukaryotic Cells</h4>
+          <p><strong>Prokaryotic Cells:</strong> These are the simplest and oldest forms of life, including bacteria and archaea. They lack a membrane-bound nucleus, so their genetic material floats freely in the cytoplasm.</p>
+          <p>Prokaryotes are typically smaller and simpler than eukaryotes but are incredibly diverse and successful. They can survive in extreme environments like hot springs, deep ocean vents, and highly acidic conditions.</p>
+          <p><strong>Eukaryotic Cells:</strong> These more complex cells have a membrane-bound nucleus that contains their DNA. This includes all plants, animals, fungi, and protists. The nucleus allows for more complex regulation of gene expression.</p>
+          <p>Eukaryotic cells also contain various organelles - specialized structures that perform specific functions, much like organs in a body. This compartmentalization allows for greater efficiency and complexity.</p>
+          
+          <h4>Page 3: Cell Organelles and Functions</h4>
+          <p><strong>Nucleus:</strong> The control center of the cell, containing DNA that directs all cellular activities. The nuclear membrane controls what enters and exits the nucleus.</p>
+          <p><strong>Mitochondria:</strong> Often called the "powerhouses" of the cell, these organelles convert glucose and oxygen into ATP (cellular energy). Cells with high energy needs have more mitochondria.</p>
+          <p><strong>Ribosomes:</strong> Protein-making factories that read genetic instructions and assemble amino acids into proteins. Found both free in cytoplasm and attached to the endoplasmic reticulum.</p>
+          <p><strong>Chloroplasts:</strong> Found only in plant cells, these organelles capture sunlight and convert it into chemical energy through photosynthesis. They contain chlorophyll, which gives plants their green color.</p>
+          <p><strong>Cell Membrane:</strong> The flexible boundary that controls what enters and leaves the cell. It's selectively permeable, allowing some substances through while blocking others.</p>
+          
+          <h3>Chapter 2: Genetics</h3>
+          
+          <h4>Page 1: DNA and Genetic Information</h4>
+          <p>DNA (deoxyribonucleic acid) is the molecule that carries genetic instructions for all living things. It's like a blueprint that determines an organism's characteristics and is passed from parents to offspring.</p>
+          <p><strong>DNA Structure:</strong> DNA has a double helix structure, like a twisted ladder. The "rungs" are made of four bases: adenine (A), thymine (T), guanine (G), and cytosine (C). These bases pair specifically: A with T, and G with C.</p>
+          <p><strong>Genetic Code:</strong> The sequence of these bases forms a code that cells read to make proteins. Every three bases (called a codon) codes for one amino acid, and amino acids link together to form proteins.</p>
+          
+          <h4>Page 2: Genes and Inheritance</h4>
+          <p><strong>Genes:</strong> Specific sections of DNA that code for particular traits. Humans have about 20,000-25,000 genes. Each gene can exist in different versions called alleles.</p>
+          <p><strong>Chromosomes:</strong> DNA is packaged into structures called chromosomes. Humans have 46 chromosomes (23 pairs) in most cells. One chromosome from each pair comes from each parent.</p>
+          <p><strong>Dominant and Recessive:</strong> Some alleles are dominant (expressed when present) while others are recessive (only expressed when two copies are present). This explains why children might have traits that neither parent shows.</p>
+          
+          <h4>Page 3: Modern Genetics</h4>
+          <p><strong>Genetic Engineering:</strong> Scientists can now modify genes to treat diseases, improve crops, and create new medicines. CRISPR technology allows precise editing of DNA sequences.</p>
+          <p><strong>Genetic Disorders:</strong> Some diseases are caused by mutations in genes. Understanding genetics helps develop treatments and allows genetic counseling for families.</p>
+          <p><strong>DNA Fingerprinting:</strong> Each person's DNA is unique (except identical twins), allowing identification in forensics and paternity testing.</p>
+          
+          <h3>Chapter 3: Evolution</h3>
+          
+          <h4>Page 1: Darwin's Theory of Evolution</h4>
+          <p>Charles Darwin proposed that all species descended from common ancestors through a process called natural selection. This theory explains the incredible diversity of life on Earth.</p>
+          <p><strong>Observations:</strong> Darwin noticed that individuals within species vary, more offspring are produced than can survive, and favorable traits become more common over time.</p>
+          <p><strong>Natural Selection:</strong> Individuals with advantageous traits are more likely to survive and reproduce, passing these traits to their offspring. Over many generations, these favorable traits become more common in the population.</p>
+          
+          <h4>Page 2: Evidence for Evolution</h4>
+          <p><strong>Fossil Record:</strong> Fossils show how species have changed over millions of years. Transitional fossils demonstrate links between different groups of organisms.</p>
+          <p><strong>Comparative Anatomy:</strong> Similar bone structures in different animals (like human arms, bat wings, and whale flippers) suggest common ancestry.</p>
+          <p><strong>Molecular Evidence:</strong> DNA comparisons show relationships between species. The more similar the DNA, the more closely related the species.</p>
+          
+          <h4>Page 3: Mechanisms of Evolution</h4>
+          <p><strong>Mutation:</strong> Random changes in DNA create new variations. Most mutations are neutral or harmful, but occasionally they provide advantages.</p>
+          <p><strong>Gene Flow:</strong> Movement of individuals between populations spreads genetic variations and can introduce new traits.</p>
+          <p><strong>Genetic Drift:</strong> Random changes in gene frequencies, especially important in small populations. Can lead to loss of genetic diversity.</p>
+          
+          <h3>Chapter 4: Ecology</h3>
+          
+          <h4>Page 1: Levels of Organization</h4>
+          <p><strong>Individual:</strong> A single organism with its own unique characteristics and life cycle. Each individual interacts with its environment to survive and reproduce.</p>
+          <p><strong>Population:</strong> All individuals of the same species living in the same area. Population size can change due to births, deaths, immigration, and emigration.</p>
+          <p><strong>Community:</strong> All different species living and interacting in the same area. Communities include producers, consumers, and decomposers.</p>
+          
+          <h4>Page 2: Ecosystem Interactions</h4>
+          <p><strong>Food Chains and Webs:</strong> Energy flows from producers (plants) to primary consumers (herbivores) to secondary consumers (carnivores). Food webs show the complex interconnections between species.</p>
+          <p><strong>Symbiosis:</strong> Close relationships between different species. Mutualism benefits both species, commensalism benefits one without harming the other, and parasitism benefits one at the expense of the other.</p>
+          <p><strong>Competition:</strong> When organisms compete for limited resources like food, water, or territory. Competition can occur within species or between different species.</p>
+          
+          <h4>Page 3: Environmental Factors</h4>
+          <p><strong>Abiotic Factors:</strong> Non-living environmental factors like temperature, rainfall, soil type, and sunlight that affect where organisms can live and how they behave.</p>
+          <p><strong>Biotic Factors:</strong> Living factors including predators, prey, competitors, and disease organisms that influence population sizes and community structure.</p>
+          <p><strong>Human Impact:</strong> Human activities like pollution, habitat destruction, and climate change significantly affect ecosystems worldwide. Conservation efforts aim to protect biodiversity and ecosystem health.</p>
+        </div>
+      </section>
+
+      <!-- Astronomy Content -->
+      <section id="astronomyContent" class="section">
+        <div class="learning-header">
+          <button onclick="showSection('learningSection', 'learningBtn')" class="back-btn">← Back to Learning</button>
+          <h2>🌌 Astronomy - Complete Guide</h2>
+          <div class="learning-tools">
+            <div class="highlighter-toolbar">
+              <span>Highlighter:</span>
+              <button class="highlight-btn" data-color="yellow" style="background:#ffeb3b;">📝</button>
+              <button class="highlight-btn" data-color="green" style="background:#4caf50;">📝</button>
+              <button class="highlight-btn" data-color="blue" style="background:#2196f3;">📝</button>
+              <button class="highlight-btn" data-color="pink" style="background:#e91e63;">📝</button>
+              <button class="clear-highlights">🗑️ Clear</button>
+            </div>
+            <div class="view-options">
+              <button class="diagram-toggle" onclick="toggleDiagrams()">📊 Show Diagrams</button>
+              <button class="font-size" onclick="changeFontSize()">🔍 Font Size</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-content">
+          <h3>Chapter 1: Our Solar System</h3>
+          <p>The solar system consists of the Sun and all objects orbiting it.</p>
+          <h4>Planets:</h4>
+          <ul>
+            <li><strong>Inner Planets:</strong> Mercury, Venus, Earth, Mars (rocky)</li>
+            <li><strong>Outer Planets:</strong> Jupiter, Saturn, Uranus, Neptune (gas giants)</li>
+          </ul>
+          <h4>Other Objects:</h4>
+          <ul>
+            <li><strong>Asteroids:</strong> Rocky objects between Mars and Jupiter</li>
+            <li><strong>Comets:</strong> Icy objects from outer solar system</li>
+            <li><strong>Moons:</strong> Natural satellites orbiting planets</li>
+          </ul>
+          
+          <h3>Chapter 2: Stars and Stellar Evolution</h3>
+          <p>Stars are massive balls of gas that produce energy through nuclear fusion.</p>
+          <h4>Star Life Cycle:</h4>
+          <ul>
+            <li><strong>Nebula:</strong> Gas and dust cloud where stars form</li>
+            <li><strong>Main Sequence:</strong> Stable hydrogen burning phase</li>
+            <li><strong>Red Giant:</strong> Expanded, cooler star</li>
+            <li><strong>White Dwarf/Neutron Star/Black Hole:</strong> Final stages</li>
+          </ul>
+          
+          <h3>Chapter 3: Galaxies and Universe</h3>
+          <p>Galaxies are vast collections of stars, gas, and dark matter.</p>
+          <h4>Galaxy Types:</h4>
+          <ul>
+            <li><strong>Spiral:</strong> Disk with spiral arms (like Milky Way)</li>
+            <li><strong>Elliptical:</strong> Oval-shaped, older stars</li>
+            <li><strong>Irregular:</strong> No defined shape</li>
+          </ul>
+          
+          <h3>Chapter 4: Cosmology</h3>
+          <p>Cosmology studies the origin and evolution of the universe.</p>
+          <h4>Big Bang Theory:</h4>
+          <ul>
+            <li><strong>Origin:</strong> Universe began 13.8 billion years ago</li>
+            <li><strong>Expansion:</strong> Space itself is expanding</li>
+            <li><strong>Evidence:</strong> Cosmic microwave background, redshift</li>
+            <li><strong>Future:</strong> Continued expansion and cooling</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Earth Science Content -->
+      <section id="earthScienceContent" class="section">
+        <div class="learning-header">
+          <button onclick="showSection('learningSection', 'learningBtn')" class="back-btn">← Back to Learning</button>
+          <h2>🌍 Earth Science - Complete Guide</h2>
+          <div class="learning-tools">
+            <div class="highlighter-toolbar">
+              <span>Highlighter:</span>
+              <button class="highlight-btn" data-color="yellow" style="background:#ffeb3b;">📝</button>
+              <button class="highlight-btn" data-color="green" style="background:#4caf50;">📝</button>
+              <button class="highlight-btn" data-color="blue" style="background:#2196f3;">📝</button>
+              <button class="highlight-btn" data-color="pink" style="background:#e91e63;">📝</button>
+              <button class="clear-highlights">🗑️ Clear</button>
+            </div>
+            <div class="view-options">
+              <button class="diagram-toggle" onclick="toggleDiagrams()">📊 Show Diagrams</button>
+              <button class="font-size" onclick="changeFontSize()">🔍 Font Size</button>
+            </div>
+          </div>
+        </div>
+        <div class="book-content">
+          <h3>Chapter 1: Geology</h3>
+          <p>Geology studies Earth's structure, composition, and processes.</p>
+          <h4>Earth's Layers:</h4>
+          <ul>
+            <li><strong>Crust:</strong> Thin outer layer (5-70 km thick)</li>
+            <li><strong>Mantle:</strong> Hot, dense rock layer (2,900 km thick)</li>
+            <li><strong>Outer Core:</strong> Liquid iron and nickel</li>
+            <li><strong>Inner Core:</strong> Solid iron and nickel</li>
+          </ul>
+          
+          <h3>Chapter 2: Plate Tectonics</h3>
+          <p>Earth's crust consists of moving plates that shape our planet.</p>
+          <h4>Plate Boundaries:</h4>
+          <ul>
+            <li><strong>Divergent:</strong> Plates move apart, create new crust</li>
+            <li><strong>Convergent:</strong> Plates collide, form mountains</li>
+            <li><strong>Transform:</strong> Plates slide past each other</li>
+          </ul>
+          
+          <h3>Chapter 3: Weather and Climate</h3>
+          <p>Weather is short-term atmospheric conditions; climate is long-term patterns.</p>
+          <h4>Weather Factors:</h4>
+          <ul>
+            <li><strong>Temperature:</strong> Heat energy in atmosphere</li>
+            <li><strong>Pressure:</strong> Weight of air column</li>
+            <li><strong>Humidity:</strong> Water vapor in air</li>
+            <li><strong>Wind:</strong> Air movement from pressure differences</li>
+          </ul>
+          
+          <h3>Chapter 4: Water Cycle</h3>
+          <p>Water continuously moves between Earth's surface and atmosphere.</p>
+          <h4>Water Cycle Steps:</h4>
+          <ul>
+            <li><strong>Evaporation:</strong> Water becomes vapor</li>
+            <li><strong>Condensation:</strong> Vapor becomes droplets</li>
+            <li><strong>Precipitation:</strong> Water falls as rain/snow</li>
+            <li><strong>Collection:</strong> Water gathers in bodies of water</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Quiz Section -->
+      <section id="quizSection" class="section">
+        <h2>Science Quiz</h2>
+        <div class="quiz-selection">
+          <h3>Choose a Quiz Topic:</h3>
+          <div class="quiz-topics">
+            <button class="topic-btn" onclick="startQuiz('chemistry')">🧪 Chemistry Quiz</button>
+            <button class="topic-btn" onclick="startQuiz('physics')">⚙️ Physics Quiz</button>
+            <button class="topic-btn" onclick="startQuiz('biology')">🧬 Biology Quiz</button>
+            <button class="topic-btn" onclick="startQuiz('astronomy')">🌌 Astronomy Quiz</button>
+            <button class="topic-btn" onclick="startQuiz('earthscience')">🌍 Earth Science Quiz</button>
+            <button class="topic-btn" onclick="startQuiz('mixed')">🎯 Mixed Quiz</button>
+          </div>
+        </div>
+        <div id="quizContainer" style="display:none;">
+          <div id="quizHeader">
+            <h3 id="quizTitle"></h3>
+            <p>Question <span id="currentQ">1</span> of <span id="totalQ">5</span></p>
+          </div>
+          <div id="question"></div>
+          <div id="options"></div>
+          <button id="submitBtn">Submit Answer</button>
+          <div id="result"></div>
+          <button id="nextBtn" style="display:none;">Next Question</button>
+          <button id="backToTopics" style="display:none;" onclick="backToTopics()">Back to Topics</button>
+        </div>
+        <div id="score" style="display:none;">Score: <span id="scoreValue">0</span>/<span id="totalScore">5</span></div>
+      </section>
+
+      <!-- Scores Section -->
+      <section id="scoresSection" class="section">
+        <h2>Your Scores</h2>
+        <div id="scoreHistory">
+          <p>No quiz attempts yet. Take a quiz to see your scores!</p>
+        </div>
+        <button id="clearScores" onclick="clearAllScores()" style="background:#ff4757; margin-top:1rem;">Clear All Scores</button>
+      </section>
+
+      <!-- Settings Section -->
+      <section id="settingsSection" class="section">
+        <h2>Profile Settings</h2>
+        <div class="settings-form">
+          <div class="setting-item">
+            <label>Username:</label>
+            <input type="text" id="settingsUsername" readonly>
+          </div>
+          <div class="setting-item">
+            <label>Gender:</label>
+            <select id="settingsGender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Change Password:</label>
+            <input type="password" id="newPasswordSetting" placeholder="New Password">
+          </div>
+          <button id="saveSettingsBtn">Save Changes</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+let users = JSON.parse(localStorage.getItem('users')) || {};
+let currentUser = localStorage.getItem('currentUser') || null;
+
+if (currentUser) {
+    showMainContent();
+}
+
+document.getElementById('yesNewUser').onclick = function() {
+    document.getElementById('initialQuestion').style.display = 'none';
+    document.getElementById('signInSection').style.display = 'block';
+};
+
+document.getElementById('noNotNewUser').onclick = function() {
+    document.getElementById('initialQuestion').style.display = 'none';
+    document.getElementById('logInSection').style.display = 'block';
+};
+
+document.getElementById('signInForm').onsubmit = function(e) {
+    e.preventDefault();
+    const username = document.getElementById('newUsername').value.trim();
+    const password = document.getElementById('newPassword').value;
+    const gender = document.getElementById('gender').value;
+    const message = document.getElementById('signInMessage');
+
+    if (users[username]) {
+        message.textContent = 'Username already exists!';
+        message.style.color = '#ff4757';
+        return;
+    }
+
+    users[username] = {password: password, gender: gender};
+    localStorage.setItem('users', JSON.stringify(users));
+    message.textContent = 'Account created successfully!';
+    message.style.color = '#2ed573';
+    
+    setTimeout(() => {
+        document.getElementById('signInSection').style.display = 'none';
+        document.getElementById('logInSection').style.display = 'block';
+        document.getElementById('username').value = username;
+    }, 2000);
+};
+
+document.getElementById('logInForm').onsubmit = function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const message = document.getElementById('logInMessage');
+
+    const userPassword = users[username]?.password || users[username];
+    if (!users[username] || userPassword !== password) {
+        message.textContent = 'Invalid username or password!';
+        message.style.color = '#ff4757';
+        return;
+    }
+
+    message.textContent = 'Login successful!';
+    message.style.color = '#2ed573';
+    
+    setTimeout(() => {
+        currentUser = username;
+        localStorage.setItem('currentUser', currentUser);
+        showMainContent();
+    }, 1500);
+};
+
+function showMainContent() {
+    document.getElementById('initialQuestion').style.display = 'none';
+    document.getElementById('signInSection').style.display = 'none';
+    document.getElementById('logInSection').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    document.getElementById('userProfile').style.display = 'block';
+    
+    document.getElementById('displayUsername').textContent = currentUser;
+    document.getElementById('welcomeUsername').textContent = currentUser;
+    document.getElementById('settingsUsername').value = currentUser;
+    
+    loadUserScores();
+    
+    const userGender = users[currentUser]?.gender;
+    if (userGender === 'male') {
+        document.getElementById('profileIcon').textContent = '♂';
+    } else if (userGender === 'female') {
+        document.getElementById('profileIcon').textContent = '♀';
+    } else {
+        document.getElementById('profileIcon').textContent = currentUser.charAt(0).toUpperCase();
+    }
+    document.getElementById('settingsGender').value = userGender || 'male';
+    document.getElementById('logoutBtn').textContent = 'Logout';
+}
+
+document.getElementById('profileIcon').onclick = function() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+};
+
+document.getElementById('logoutBtn').onclick = function() {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    document.getElementById('initialQuestion').style.display = 'block';
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('userProfile').style.display = 'none';
+};
+
+function showSection(sectionId, btnId) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(sectionId).classList.add('active');
+    document.getElementById(btnId).classList.add('active');
+}
+
+document.getElementById('dashboardBtn').onclick = () => showSection('dashboardSection', 'dashboardBtn');
+document.getElementById('learningBtn').onclick = () => showSection('learningSection', 'learningBtn');
+document.getElementById('quizBtn').onclick = () => showSection('quizSection', 'quizBtn');
+document.getElementById('scoresBtn').onclick = () => showSection('scoresSection', 'scoresBtn');
+document.getElementById('settingsBtn').onclick = () => showSection('settingsSection', 'settingsBtn');
+
+function showChemistry() {
+    showSection('chemistryContent', 'learningBtn');
+    trackLearningProgress('chemistry');
+}
+
+function showPhysics() {
+    showSection('physicsContent', 'learningBtn');
+    trackLearningProgress('physics');
+}
+
+function showBiology() {
+    showSection('biologyContent', 'learningBtn');
+    trackLearningProgress('biology');
+}
+
+function showAstronomy() {
+    showSection('astronomyContent', 'learningBtn');
+    trackLearningProgress('astronomy');
+}
+
+function showEarthScience() {
+    showSection('earthScienceContent', 'learningBtn');
+    trackLearningProgress('earthscience');
+}
+
+document.getElementById('saveSettingsBtn').onclick = function() {
+    const newPassword = document.getElementById('newPasswordSetting').value;
+    const newGender = document.getElementById('settingsGender').value;
+    
+    if (newPassword) {
+        users[currentUser].password = newPassword;
+    }
+    users[currentUser].gender = newGender;
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    if (newGender === 'male') {
+        document.getElementById('profileIcon').textContent = '♂';
+    } else {
+        document.getElementById('profileIcon').textContent = '♀';
+    }
+    
+    alert('Settings saved successfully!');
+    document.getElementById('newPasswordSetting').value = '';
+};
+
+let selectedHighlightColor = 'yellow';
+let fontSize = 16;
+
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('highlight-btn')) {
+        selectedHighlightColor = e.target.dataset.color;
+        document.querySelectorAll('.highlight-btn').forEach(btn => btn.style.border = 'none');
+        e.target.style.border = '3px solid #333';
+    }
+    
+    if (e.target.classList.contains('clear-highlights')) {
+        document.querySelectorAll('[class*="highlighted-"]').forEach(el => {
+            el.className = el.className.replace(/highlighted-\w+/g, '');
+        });
+    }
+});
+
+document.addEventListener('mouseup', function() {
+    const selection = window.getSelection();
+    if (selection.toString().length > 0 && selection.anchorNode.parentElement.closest('.book-content')) {
+        const range = selection.getRangeAt(0);
+        const span = document.createElement('span');
+        span.className = `highlighted-${selectedHighlightColor}`;
+        try {
+            range.surroundContents(span);
+        } catch (e) {
+            span.appendChild(range.extractContents());
+            range.insertNode(span);
+        }
+        selection.removeAllRanges();
+    }
+});
+
+function toggleDiagrams() {
+    const diagrams = document.querySelectorAll('.diagram-container');
+    diagrams.forEach(diagram => {
+        if (diagram.style.display === 'none' || !diagram.style.display) {
+            diagram.style.display = 'block';
+        } else {
+            diagram.style.display = 'none';
+        }
+    });
+    
+    const btn = document.querySelector('.diagram-toggle');
+    if (btn.textContent.includes('Show')) {
+        btn.textContent = '🚫 Hide Diagrams';
+    } else {
+        btn.textContent = '📊 Show Diagrams';
+    }
+}
+
+function changeFontSize() {
+    fontSize = fontSize === 16 ? 18 : fontSize === 18 ? 20 : 16;
+    document.querySelectorAll('.book-content').forEach(content => {
+        content.style.fontSize = fontSize + 'px';
+    });
+}
+
+const quizData = {
+    chemistry: [
+        {
+            question: "What are the smallest units of matter that retain the properties of an element?",
+            options: ["Molecules", "Atoms", "Protons", "Electrons"],
+            correct: 1
+        },
+        {
+            question: "Who developed the first scientific atomic theory in the early 1800s?",
+            options: ["Albert Einstein", "Isaac Newton", "John Dalton", "Marie Curie"],
+            correct: 2
+        },
+        {
+            question: "What determines an element's identity?",
+            options: ["Number of neutrons", "Number of protons", "Number of electrons", "Atomic mass"],
+            correct: 1
+        },
+        {
+            question: "What type of bond forms when electrons are shared between atoms?",
+            options: ["Ionic bond", "Metallic bond", "Covalent bond", "Hydrogen bond"],
+            correct: 2
+        },
+        {
+            question: "What is the general form of a synthesis reaction?",
+            options: ["AB → A + B", "A + B → AB", "A + BC → AC + B", "AB + CD → AD + CB"],
+            correct: 1
+        }
+    ],
+    physics: [
+        {
+            question: "What is Newton's First Law also known as?",
+            options: ["Law of Acceleration", "Law of Inertia", "Law of Action-Reaction", "Law of Gravity"],
+            correct: 1
+        },
+        {
+            question: "What is the formula for kinetic energy?",
+            options: ["KE = mv", "KE = ½mv²", "KE = mgh", "KE = mc²"],
+            correct: 1
+        },
+        {
+            question: "What is the speed of light in vacuum?",
+            options: ["300,000 m/s", "3,000,000 m/s", "300,000,000 m/s", "3,000,000,000 m/s"],
+            correct: 2
+        },
+        {
+            question: "What type of waves need a medium to travel through?",
+            options: ["Electromagnetic waves", "Light waves", "Mechanical waves", "Radio waves"],
+            correct: 2
+        },
+        {
+            question: "What happens to kinetic energy when you double the speed of an object?",
+            options: ["It doubles", "It triples", "It quadruples", "It stays the same"],
+            correct: 2
+        }
+    ],
+    biology: [
+        {
+            question: "What are the three main parts of cell theory?",
+            options: ["Cells have DNA, RNA, and proteins", "All living things are made of cells, cells are the basic unit of life, all cells come from pre-existing cells", "Cells have nucleus, cytoplasm, and membrane", "Cells reproduce, grow, and die"],
+            correct: 1
+        },
+        {
+            question: "What are the powerhouses of the cell?",
+            options: ["Nucleus", "Ribosomes", "Mitochondria", "Chloroplasts"],
+            correct: 2
+        },
+        {
+            question: "What does DNA stand for?",
+            options: ["Deoxyribonucleic acid", "Dinitrogen acid", "Double nucleic acid", "Deoxyribose acid"],
+            correct: 0
+        },
+        {
+            question: "Who proposed the theory of evolution by natural selection?",
+            options: ["Gregor Mendel", "Charles Darwin", "Louis Pasteur", "Alexander Fleming"],
+            correct: 1
+        },
+        {
+            question: "What is the basic unit of heredity?",
+            options: ["Chromosome", "DNA", "Gene", "Allele"],
+            correct: 2
+        }
+    ],
+    astronomy: [
+        {
+            question: "What are the four inner planets of our solar system?",
+            options: ["Mercury, Venus, Earth, Mars", "Jupiter, Saturn, Uranus, Neptune", "Earth, Mars, Jupiter, Saturn", "Venus, Earth, Mars, Jupiter"],
+            correct: 0
+        },
+        {
+            question: "What is the main sequence phase of a star?",
+            options: ["When it explodes", "Stable hydrogen burning phase", "When it becomes a red giant", "When it forms from a nebula"],
+            correct: 1
+        },
+        {
+            question: "How old is the universe according to the Big Bang theory?",
+            options: ["4.6 billion years", "10.2 billion years", "13.8 billion years", "20.1 billion years"],
+            correct: 2
+        },
+        {
+            question: "What type of galaxy is the Milky Way?",
+            options: ["Elliptical", "Spiral", "Irregular", "Dwarf"],
+            correct: 1
+        },
+        {
+            question: "What are comets primarily made of?",
+            options: ["Rock and metal", "Gas and plasma", "Ice and dust", "Pure ice"],
+            correct: 2
+        }
+    ],
+    earthscience: [
+        {
+            question: "What is the thickest layer of the Earth?",
+            options: ["Crust", "Mantle", "Outer core", "Inner core"],
+            correct: 1
+        },
+        {
+            question: "What type of plate boundary creates new crust?",
+            options: ["Convergent", "Divergent", "Transform", "Subduction"],
+            correct: 1
+        },
+        {
+            question: "What is the difference between weather and climate?",
+            options: ["No difference", "Weather is short-term, climate is long-term", "Weather is global, climate is local", "Weather is predictable, climate is not"],
+            correct: 1
+        },
+        {
+            question: "What is the first step in the water cycle?",
+            options: ["Condensation", "Precipitation", "Evaporation", "Collection"],
+            correct: 2
+        },
+        {
+            question: "What causes wind?",
+            options: ["Temperature differences", "Air pressure differences", "Humidity changes", "Earth's rotation"],
+            correct: 1
+        }
+    ]
+};
+
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+let score = 0;
+let quizType = '';
+
+function startQuiz(type) {
+    quizType = type;
+    currentQuestionIndex = 0;
+    score = 0;
+    
+    if (type === 'mixed') {
+        currentQuiz = [];
+        Object.keys(quizData).forEach(subject => {
+            currentQuiz.push(quizData[subject][Math.floor(Math.random() * quizData[subject].length)]);
+        });
+    } else {
+        currentQuiz = [...quizData[type]];
+    }
+    
+    document.querySelector('.quiz-selection').style.display = 'none';
+    document.getElementById('quizContainer').style.display = 'block';
+    document.getElementById('score').style.display = 'block';
+    document.getElementById('quizTitle').textContent = type.charAt(0).toUpperCase() + type.slice(1) + ' Quiz';
+    document.getElementById('totalQ').textContent = currentQuiz.length;
+    document.getElementById('totalScore').textContent = currentQuiz.length;
+    
+    showQuestion();
+}
+
+function showQuestion() {
+    const question = currentQuiz[currentQuestionIndex];
+    document.getElementById('currentQ').textContent = currentQuestionIndex + 1;
+    document.getElementById('question').textContent = question.question;
+    
+    const optionsDiv = document.getElementById('options');
+    optionsDiv.innerHTML = '';
+    
+    question.options.forEach((option, index) => {
+        const optionDiv = document.createElement('div');
+        optionDiv.className = 'option';
+        optionDiv.textContent = option;
+        optionDiv.onclick = () => selectOption(index);
+        optionsDiv.appendChild(optionDiv);
+    });
+    
+    document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('result').textContent = '';
+    document.getElementById('nextBtn').style.display = 'none';
+}
+
+function selectOption(index) {
+    document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+    document.querySelectorAll('.option')[index].classList.add('selected');
+    window.selectedAnswer = index;
+}
+
+document.getElementById('submitBtn').onclick = function() {
+    if (window.selectedAnswer === undefined) {
+        alert('Please select an answer!');
+        return;
+    }
+    
+    const question = currentQuiz[currentQuestionIndex];
+    const options = document.querySelectorAll('.option');
+    
+    options.forEach((opt, index) => {
+        if (index === question.correct) {
+            opt.classList.add('correct');
+        } else if (index === window.selectedAnswer && index !== question.correct) {
+            opt.classList.add('incorrect');
+        }
+    });
+    
+    if (window.selectedAnswer === question.correct) {
+        score++;
+        document.getElementById('result').textContent = 'Correct! ✅';
+        document.getElementById('result').style.color = '#2ed573';
+    } else {
+        document.getElementById('result').textContent = 'Incorrect! ❌';
+        document.getElementById('result').style.color = '#ff4757';
+    }
+    
+    document.getElementById('scoreValue').textContent = score;
+    document.getElementById('submitBtn').style.display = 'none';
+    
+    if (currentQuestionIndex < currentQuiz.length - 1) {
+        document.getElementById('nextBtn').style.display = 'block';
+    } else {
+        document.getElementById('backToTopics').style.display = 'block';
+        setTimeout(() => {
+            alert(`Quiz completed! Your score: ${score}/${currentQuiz.length}`);
+        }, 1000);
+    }
+    
+    window.selectedAnswer = undefined;
+};
+
+document.getElementById('nextBtn').onclick = function() {
+    currentQuestionIndex++;
+    showQuestion();
+};
+
+function backToTopics() {
+    saveQuizScore();
+    
+    document.querySelector('.quiz-selection').style.display = 'block';
+    document.getElementById('quizContainer').style.display = 'none';
+    document.getElementById('score').style.display = 'none';
+    document.getElementById('backToTopics').style.display = 'none';
+}
+
+function saveQuizScore() {
+    const scoreData = {
+        user: currentUser,
+        topic: quizType,
+        score: score,
+        total: currentQuiz.length,
+        percentage: Math.round((score / currentQuiz.length) * 100),
+        date: new Date().toLocaleDateString(),
+        time: new Date().toLocaleTimeString()
+    };
+    
+    let userScores = JSON.parse(localStorage.getItem(`scores_${currentUser}`)) || [];
+    userScores.push(scoreData);
+    localStorage.setItem(`scores_${currentUser}`, JSON.stringify(userScores));
+    
+    updateScoreDisplay();
+    updateDashboard();
+}
+
+function updateScoreDisplay() {
+    const userScores = JSON.parse(localStorage.getItem(`scores_${currentUser}`)) || [];
+    const scoreHistory = document.getElementById('scoreHistory');
+    
+    if (userScores.length === 0) {
+        scoreHistory.innerHTML = '<p>No quiz attempts yet. Take a quiz to see your scores!</p>';
+        return;
+    }
+    
+    let html = '<div class="score-list">';
+    userScores.reverse().forEach((scoreData, index) => {
+        const grade = scoreData.percentage >= 80 ? 'A' : scoreData.percentage >= 70 ? 'B' : scoreData.percentage >= 60 ? 'C' : scoreData.percentage >= 50 ? 'D' : 'F';
+        const gradeColor = scoreData.percentage >= 80 ? '#2ed573' : scoreData.percentage >= 70 ? '#ffa502' : scoreData.percentage >= 60 ? '#ff6348' : '#ff4757';
+        
+        html += `
+            <div class="score-card">
+                <div class="score-header">
+                    <h4>${scoreData.topic.charAt(0).toUpperCase() + scoreData.topic.slice(1)} Quiz</h4>
+                    <span class="grade" style="color:${gradeColor}">${grade}</span>
+                </div>
+                <div class="score-details">
+                    <p><strong>Score:</strong> ${scoreData.score}/${scoreData.total} (${scoreData.percentage}%)</p>
+                    <p><strong>Date:</strong> ${scoreData.date} at ${scoreData.time}</p>
+                </div>
+            </div>
+        `;
+    });
+    html += '</div>';
+    
+    scoreHistory.innerHTML = html;
+}
+
+function clearAllScores() {
+    if (confirm('Are you sure you want to clear all your quiz scores?')) {
+        localStorage.removeItem(`scores_${currentUser}`);
+        updateScoreDisplay();
+    }
+}
+
+function loadUserScores() {
+    updateScoreDisplay();
+    updateDashboard();
+}
+
+function updateDashboard() {
+    const userScores = JSON.parse(localStorage.getItem(`scores_${currentUser}`)) || [];
+    const learningProgress = JSON.parse(localStorage.getItem(`learning_${currentUser}`)) || {};
+    
+    document.getElementById('quizzesCompleted').textContent = userScores.length;
+    
+    if (userScores.length > 0) {
+        const totalPercentage = userScores.reduce((sum, score) => sum + score.percentage, 0);
+        const averageScore = Math.round(totalPercentage / userScores.length);
+        document.getElementById('averageScore').textContent = averageScore + '%';
+    } else {
+        document.getElementById('averageScore').textContent = '0%';
+    }
+    
+    const totalSections = 5;
+    const completedSections = Object.keys(learningProgress).length;
+    const learningPercent = Math.round((completedSections / totalSections) * 100);
+    document.getElementById('learningProgress').textContent = learningPercent + '%';
+    
+    const totalPoints = userScores.reduce((sum, score) => sum + (score.score * 10), 0);
+    document.getElementById('totalPoints').textContent = totalPoints;
+}
+
+function trackLearningProgress(section) {
+    let learningProgress = JSON.parse(localStorage.getItem(`learning_${currentUser}`)) || {};
+    learningProgress[section] = true;
+    localStorage.setItem(`learning_${currentUser}`, JSON.stringify(learningProgress));
+    updateDashboard();
+}
+  </script>
+</body>
+</html>
